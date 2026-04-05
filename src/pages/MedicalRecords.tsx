@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Space, Card, Tag, Search, Loading, NavBar, Empty, Divider } from 'react-vant';
 import * as Icons from 'lucide-react';
 
-const API_EMR = 'http://localhost:5000/medical_records';
+const API_EMR = 'https://houduan-hlb1.onrender.com/medical_records';
 
 export default function MedicalRecordsPage() {
   const navigate = useNavigate();

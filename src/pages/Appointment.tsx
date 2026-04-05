@@ -54,9 +54,9 @@ export default function AppointmentPage() {
     try {
       if (!silent) setLoading(true);
       const [paymentsRes, doctorsRes, apptsRes] = await Promise.all([
-          phone ? fetch(`http://localhost:5000/payments?ownerPhone=${phone}`) : Promise.resolve({ json: () => [] }),
-          fetch('http://localhost:5000/doctors'),
-          phone ? fetch(`http://localhost:5000/appointments?ownerPhone=${phone}`) : Promise.resolve({ json: () => [] })
+          phone ? fetch(`https://houduan-hlb1.onrender.com/payments?ownerPhone=${phone}`) : Promise.resolve({ json: () => [] }),
+          fetch('https://houduan-hlb1.onrender.com/doctors'),
+          phone ? fetch(`https://houduan-hlb1.onrender.com/appointments?ownerPhone=${phone}`) : Promise.resolve({ json: () => [] })
       ]);
       const paymentsData = await (paymentsRes.json ? paymentsRes.json() : []);
       const doctorsData = await doctorsRes.json();
@@ -69,7 +69,7 @@ export default function AppointmentPage() {
       const activeAppt = Array.isArray(apptsData) ? apptsData.sort((a,b) => b.id - a.id)[0] : null;
       if (activeAppt && (activeAppt.status === 'TODO' || activeAppt.status === 'DOING')) {
           // Calculate wait count if TODO
-          const allApptsRes = await fetch('http://localhost:5000/appointments');
+          const allApptsRes = await fetch('https://houduan-hlb1.onrender.com/appointments');
           const allAppts = await allApptsRes.json();
           const todoCount = allAppts.filter((a: any) => a.status === 'TODO' && a.id < activeAppt.id).length;
           
@@ -104,7 +104,7 @@ export default function AppointmentPage() {
     Toast.loading({ message: '正在通讯银行/HIS 系统...', forbidClick: true });
     
     try {
-        const res = await fetch(`http://localhost:5000/payments/${selectedBill.id}`, {
+        const res = await fetch(`https://houduan-hlb1.onrender.com/payments/${selectedBill.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: 'settled', paymentMethod: payMethod })
@@ -132,7 +132,7 @@ export default function AppointmentPage() {
                         createdAt: new Date().toISOString()
                     };
                     
-                    const aptPostRes = await fetch('http://localhost:5000/appointments', {
+                    const aptPostRes = await fetch('https://houduan-hlb1.onrender.com/appointments', {
                          method: 'POST',
                          headers: { 'Content-Type': 'application/json' },
                          body: JSON.stringify(payload)
@@ -145,7 +145,7 @@ export default function AppointmentPage() {
                     }
 
                     // Refresh local queue count correctly
-                    const apptRes = await fetch('http://localhost:5000/appointments');
+                    const apptRes = await fetch('https://houduan-hlb1.onrender.com/appointments');
                     if (apptRes.ok) {
                         const appts = await apptRes.json();
                         const todoCount = appts.filter((a: any) => a.status === 'TODO').length;
@@ -182,7 +182,7 @@ export default function AppointmentPage() {
       Dialog.confirm({ title: '取消挂号/缴费', message: '确认取消此单据？如果包含挂号费，取消后需重新排队。' }).then(async () => {
           Toast.loading({ message: '撤销中...', forbidClick: true });
           try {
-              const res = await fetch(`http://localhost:5000/payments/${billId}`, {
+              const res = await fetch(`https://houduan-hlb1.onrender.com/payments/${billId}`, {
                   method: 'PATCH',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ status: 'cancelled' })
@@ -240,7 +240,7 @@ export default function AppointmentPage() {
       };
 
       try {
-          const res = await fetch('http://localhost:5000/payments', {
+          const res = await fetch('https://houduan-hlb1.onrender.com/payments', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(newBill)

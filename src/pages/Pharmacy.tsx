@@ -57,7 +57,7 @@ export default function PharmacyPage() {
   useEffect(() => {
     const phone = localStorage.getItem('userPhone');
     if (phone) {
-      fetch(`http://localhost:5000/payments?ownerPhone=${phone}&status=settled`)
+      fetch(`https://houduan-hlb1.onrender.com/payments?ownerPhone=${phone}&status=settled`)
         .then(res => res.json())
         .then((data: any[]) => {
           let rs = 0;
@@ -174,10 +174,10 @@ export default function PharmacyPage() {
     try {
       // 扣减库存
       for (const [id, count] of Object.entries(cart)) {
-        const medRes = await fetch(`http://localhost:5000/medicines/${id}`);
+        const medRes = await fetch(`https://houduan-hlb1.onrender.com/medicines/${id}`);
         const medData = await medRes.json();
         const newStock = Math.max(0, Number(medData.stock) - Number(count));
-        await fetch(`http://localhost:5000/medicines/${id}`, {
+        await fetch(`https://houduan-hlb1.onrender.com/medicines/${id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stock: newStock, status: newStock < 5 ? '紧缺' : newStock < 15 ? '少量' : '充足' })
@@ -185,7 +185,7 @@ export default function PharmacyPage() {
       }
 
       // 生成账单
-      await fetch('http://localhost:5000/payments', {
+      await fetch('https://houduan-hlb1.onrender.com/payments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(paymentData)

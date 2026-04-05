@@ -18,7 +18,7 @@ export default function HomePage() {
     const phone = localStorage.getItem('userPhone');
     if (phone) {
         setLoading(true);
-        fetch(`http://localhost:5000/records?phone=${phone}`)
+        fetch(`https://houduan-hlb1.onrender.com/records?phone=${phone}`)
           .then(res => res.json())
           .then(data => {
             const mappedPets = data.map((item: any) => ({
@@ -44,7 +44,7 @@ export default function HomePage() {
   const fetchVisits = () => {
     const phone = localStorage.getItem('userPhone');
     if (phone) {
-        fetch(`http://localhost:5000/medical_records?ownerPhone=${phone}&_sort=createdAt&_order=desc&_limit=3`)
+        fetch(`https://houduan-hlb1.onrender.com/medical_records?ownerPhone=${phone}&_sort=createdAt&_order=desc&_limit=3`)
           .then(res => res.json())
           .then(data => {
             const mappedVisits = data.map((item: any) => ({
@@ -64,7 +64,7 @@ export default function HomePage() {
   const fetchInpatientStatus = () => {
     const phone = localStorage.getItem('userPhone');
     if (phone) {
-        fetch(`http://localhost:5000/inpatients?phone=${phone}`)
+        fetch(`https://houduan-hlb1.onrender.com/inpatients?phone=${phone}`)
           .then(res => res.json())
           .then(data => {
             if (data.length > 0) setActiveInpatient(data[0]);
@@ -77,7 +77,7 @@ export default function HomePage() {
   const fetchPayments = () => {
     const phone = localStorage.getItem('userPhone');
     if (phone) {
-        fetch(`http://localhost:5000/payments?ownerPhone=${phone}&status=pending`)
+        fetch(`https://houduan-hlb1.onrender.com/payments?ownerPhone=${phone}&status=pending`)
           .then(res => res.json())
           .then(data => setPendingPaymentCount(Array.isArray(data) ? data.length : 0))
           .catch(() => {});
@@ -108,7 +108,7 @@ export default function HomePage() {
     console.log('Submitting Pet Data:', values);
 
     try {
-        const res = await fetch('http://localhost:5000/records', {
+        const res = await fetch('https://houduan-hlb1.onrender.com/records', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

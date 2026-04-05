@@ -79,11 +79,11 @@ export default function ProfilePage() {
   const fetchData = useCallback(async () => {
     try {
       const url = phone
-        ? `http://localhost:5000/payments?ownerPhone=${phone}`
-        : `http://localhost:5000/payments`;
+        ? `https://houduan-hlb1.onrender.com/payments?ownerPhone=${phone}`
+        : `https://houduan-hlb1.onrender.com/payments`;
       const [paymentsRes, medsRes] = await Promise.all([
         fetch(url),
-        fetch('http://localhost:5000/medicines'),
+        fetch('https://houduan-hlb1.onrender.com/medicines'),
       ]);
       const payments = await paymentsRes.json();
       const meds = await medsRes.json();
@@ -150,13 +150,13 @@ export default function ProfilePage() {
       onConfirm: async () => {
         try {
           // Deduct stock from server
-          await fetch(`http://localhost:5000/medicines/${med.id}`, {
+          await fetch(`https://houduan-hlb1.onrender.com/medicines/${med.id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ stock: Math.max(0, med.stock - 1) }),
           });
           // Record a settled "redemption" payment so points deduct on next load
-          await fetch(`http://localhost:5000/payments`, {
+          await fetch(`https://houduan-hlb1.onrender.com/payments`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
